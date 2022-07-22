@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{6FF1C747-7709-473A-A00F-D4C80E8D4E51}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{6C22A341-CCB3-4BC7-B131-5BFA6351E53B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IncrementalMapper", "src\IncrementalMapper\IncrementalMapper.csproj", "{2BC6D79B-0BD1-4827-910C-D09CC2089CFE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IncrementalMapper.Tests", "tests\IncrementalMapper.Tests\IncrementalMapper.Tests.csproj", "{A9CEA29E-FCE7-4654-BDB1-75677B993D3D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{28C635BA-94A2-4EAF-931F-342E66A0155C}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{39ABD65D-8271-4E0D-B5AA-7F55EA8118B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IncrementalMapper.Sample", "samples\IncrementalMapper.Sample\IncrementalMapper.Sample.csproj", "{FE9DD315-4255-4E24-B2B4-1704596DE6AD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2BC6D79B-0BD1-4827-910C-D09CC2089CFE} = {6C22A341-CCB3-4BC7-B131-5BFA6351E53B}
+		{A9CEA29E-FCE7-4654-BDB1-75677B993D3D} = {6FF1C747-7709-473A-A00F-D4C80E8D4E51}
+		{FE9DD315-4255-4E24-B2B4-1704596DE6AD} = {39ABD65D-8271-4E0D-B5AA-7F55EA8118B0}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2BC6D79B-0BD1-4827-910C-D09CC2089CFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BC6D79B-0BD1-4827-910C-D09CC2089CFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BC6D79B-0BD1-4827-910C-D09CC2089CFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BC6D79B-0BD1-4827-910C-D09CC2089CFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9CEA29E-FCE7-4654-BDB1-75677B993D3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9CEA29E-FCE7-4654-BDB1-75677B993D3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9CEA29E-FCE7-4654-BDB1-75677B993D3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9CEA29E-FCE7-4654-BDB1-75677B993D3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE9DD315-4255-4E24-B2B4-1704596DE6AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE9DD315-4255-4E24-B2B4-1704596DE6AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE9DD315-4255-4E24-B2B4-1704596DE6AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE9DD315-4255-4E24-B2B4-1704596DE6AD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
