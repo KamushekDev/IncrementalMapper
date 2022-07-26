@@ -6,7 +6,7 @@ namespace IncrementalMapper.Tests;
 
 public class TestHelper
 {
-    public static async Task<GeneratorDriverRunResult> Verify(string source)
+    public static async Task<GeneratorDriverRunResult> Verify(string source, IEnumerable<MetadataReference> additionalReferences)
     {                       
         SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(source);
 
@@ -18,7 +18,7 @@ public class TestHelper
         CSharpCompilation compilation = CSharpCompilation.Create(
             assemblyName: "Tests",
             syntaxTrees: new[] { syntaxTree },
-            references: references);
+            references: references.Concat(additionalReferences));
 
         
         var generator = new MapperGenerator();

@@ -6,9 +6,8 @@ namespace IncrementalMapper;
 public static class GeneratorHelper
 {
     public const string ConfigClassName = @"IncrementalMapperConfig";
-
-
-    public static string GetStaticConfigText()
+    
+    public static string GetConfigText(ImmutableArray<int> arities)
     {
         const string fileTemplate = @"
 using System;
@@ -24,246 +23,61 @@ public enum OtherMembersBehaviour
 
 public class {0} 
 {{
-    public IncrementalMapping<TIn, TOut> ConfigureMap<TIn, TOut>()
-    {{
-        return new IncrementalMapping<TIn, TOut>();    
-    }}
-    public IncrementalMapping<TIn1, TIn2, TOut> ConfigureMap<TIn1, TIn2, TOut>()
-    {{
-        return new IncrementalMapping<TIn1, TIn2, TOut>();    
-    }}
-    public IncrementalMapping<TIn1, TIn2, TIn3, TOut> ConfigureMap<TIn1, TIn2, TIn3, TOut>()
-    {{
-        return new IncrementalMapping<TIn1, TIn2, TIn3, TOut>();    
-    }}
-    public IncrementalMapping<TIn1, TIn2, TIn3, TIn4, TOut> ConfigureMap<TIn1, TIn2, TIn3, TIn4, TOut>()
-    {{
-        return new IncrementalMapping<TIn1, TIn2, TIn3, TIn4, TOut>();    
-    }}
-    public IncrementalMapping<TIn1, TIn2, TIn3, TIn4, TIn5, TOut> ConfigureMap<TIn1, TIn2, TIn3, TIn4, TIn5, TOut>()
-    {{
-        return new IncrementalMapping<TIn1, TIn2, TIn3, TIn4, TIn5, TOut>();    
-    }}
-    public IncrementalMapping<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TOut> ConfigureMap<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TOut>()
-    {{
-        return new IncrementalMapping<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TOut>();    
-    }}
-    public IncrementalMapping<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TOut> ConfigureMap<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TOut>()
-    {{
-        return new IncrementalMapping<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TOut>();    
-    }}
-    public IncrementalMapping<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TOut> ConfigureMap<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TOut>()
-    {{
-        return new IncrementalMapping<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TOut>();    
-    }}
+    {1}
 }}
 
-public class IncrementalMapping<TIn, TOut> 
-{{
-    public IncrementalMapping<TIn, TOut> ForMember<TMember>(Expression<Func<TOut, TMember>> member, Expression<Func<TIn, TMember>> mapFunc)
-    {{
-        return this;
-    }}
-    public void ForAllOtherMembers(OtherMembersBehaviour behaviour) {{ }}
-}}
-
-public class IncrementalMapping<TIn1, TIn2, TOut> 
-{{
-    public IncrementalMapping<TIn1, TIn2, TOut> ForMember<TMember>(Expression<Func<TOut, TMember>> member, Expression<Func<TIn1, TIn2, TMember>> mapFunc)
-    {{
-        return this;
-    }}
-    public void ForAllOtherMembers(OtherMembersBehaviour behaviour) {{ }}
-}}
-
-public class IncrementalMapping<TIn1, TIn2, TIn3, TOut> 
-{{
-    public IncrementalMapping<TIn1, TIn2, TIn3, TOut> ForMember<TMember>(Expression<Func<TOut, TMember>> member, Expression<Func<TIn1, TIn2, TIn3, TMember>> mapFunc)
-    {{
-        return this;
-    }}
-    public void ForAllOtherMembers(OtherMembersBehaviour behaviour) {{ }}
-}}
-
-public class IncrementalMapping<TIn1, TIn2, TIn3, TIn4, TOut> 
-{{
-    public IncrementalMapping<TIn1, TIn2, TIn3, TIn4, TOut> ForMember<TMember>(Expression<Func<TOut, TMember>> member, Expression<Func<TIn1, TIn2, TIn3, TIn4, TMember>> mapFunc)
-    {{
-        return this;
-    }}
-    public void ForAllOtherMembers(OtherMembersBehaviour behaviour) {{ }}
-}}
-
-public class IncrementalMapping<TIn1, TIn2, TIn3, TIn4, TIn5, TOut> 
-{{
-    public IncrementalMapping<TIn1, TIn2, TIn3, TIn4, TIn5, TOut> ForMember<TMember>(Expression<Func<TOut, TMember>> member, Expression<Func<TIn1, TIn2, TIn3, TIn4, TIn5, TMember>> mapFunc)
-    {{
-        return this;
-    }}
-    public void ForAllOtherMembers(OtherMembersBehaviour behaviour) {{ }}
-}}
-
-public class IncrementalMapping<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TOut> 
-{{
-    public IncrementalMapping<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TOut> ForMember<TMember>(Expression<Func<TOut, TMember>> member, Expression<Func<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TMember>> mapFunc)
-    {{
-        return this;
-    }}
-    public void ForAllOtherMembers(OtherMembersBehaviour behaviour) {{ }}
-}}
-
-public class IncrementalMapping<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TOut> 
-{{
-    public IncrementalMapping<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TOut> ForMember<TMember>(Expression<Func<TOut, TMember>> member, Expression<Func<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TMember>> mapFunc)
-    {{
-        return this;
-    }}
-    public void ForAllOtherMembers(OtherMembersBehaviour behaviour) {{ }}
-}}
-
-public class IncrementalMapping<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TOut> 
-{{
-    public IncrementalMapping<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TOut> ForMember<TMember>(Expression<Func<TOut, TMember>> member, Expression<Func<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TMember>> mapFunc)
-    {{
-        return this;
-    }}
-    public void ForAllOtherMembers(OtherMembersBehaviour behaviour) {{ }}
-}}
+{2}
 ";
 
-        return string.Format(fileTemplate, ConfigClassName);
+        var methods = new List<string>();
+        var classes = new List<string>();
+
+        foreach (var arity in arities)
+        {
+            methods.Add(GetMethodForNInputs(arity));
+            classes.Add(GetClassForNInputs(arity));
+        }
+
+        return string.Format(fileTemplate, ConfigClassName, string.Join("", methods), string.Join("", classes));
     }
 
-    public static string GetConfigFileSource(ImmutableArray<(string m, string c)> usedTypes)
-    {
-        const string configFileTemplate = @"
-using System;
-using System.Linq.Expressions;
-
-namespace IncrementalMapper;
-public enum OtherMembersBehaviour
-{
-    TryMapByName,
-    Ignore
-}
-
-public class {0}} 
-{
-    public IncrementalMapping<TIn, TOut> ConfigureMap<TIn, TOut>()
-    {
-        return new IncrementalMapping<TIn, TOut>();    
-    }
-    
-}
-
-public class IncrementalMapping<TIn, TOut> 
-{
-    public IncrementalMapping<TIn, TOut> ForMember<TMember>(Expression<Func<TOut, TMember>> member, Expression<Func<TIn, TMember>> mapFunc)
-    {
-        return this;
-    }
-    public void ForAllOtherMembers(OtherMembersBehaviour behaviour) { }
-}
-
-public class IncrementalMapping<TIn1, TIn2, TOut> 
-{
-    public IncrementalMapping<TIn1, TIn2, TOut> ForMember<TMember>(Expression<Func<TOut, TMember>> member, Expression<Func<TIn1, TIn2, TMember>> mapFunc)
-    {
-        return this;
-    }
-    public void ForAllOtherMembers(OtherMembersBehaviour behaviour) { }
-}
-
-public class IncrementalMapping<TIn1, TIn2, TIn3, TOut> 
-{
-    public IncrementalMapping<TIn1, TIn2, TIn3, TOut> ForMember<TMember>(Expression<Func<TOut, TMember>> member, Expression<Func<TIn1, TIn2, TIn3, TMember>> mapFunc)
-    {
-        return this;
-    }
-    public void ForAllOtherMembers(OtherMembersBehaviour behaviour) { }
-}
-
-public class IncrementalMapping<TIn1, TIn2, TIn3, TIn4, TOut> 
-{
-    public IncrementalMapping<TIn1, TIn2, TIn3, TIn4, TOut> ForMember<TMember>(Expression<Func<TOut, TMember>> member, Expression<Func<TIn1, TIn2, TIn3, TIn4, TMember>> mapFunc)
-    {
-        return this;
-    }
-    public void ForAllOtherMembers(OtherMembersBehaviour behaviour) { }
-}
-
-public class IncrementalMapping<TIn1, TIn2, TIn3, TIn4, TIn5, TOut> 
-{
-    public IncrementalMapping<TIn1, TIn2, TIn3, TIn4, TIn5, TOut> ForMember<TMember>(Expression<Func<TOut, TMember>> member, Expression<Func<TIn1, TIn2, TIn3, TIn4, TIn5, TMember>> mapFunc)
-    {
-        return this;
-    }
-    public void ForAllOtherMembers(OtherMembersBehaviour behaviour) { }
-}
-
-public class IncrementalMapping<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TOut> 
-{
-    public IncrementalMapping<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TOut> ForMember<TMember>(Expression<Func<TOut, TMember>> member, Expression<Func<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TMember>> mapFunc)
-    {
-        return this;
-    }
-    public void ForAllOtherMembers(OtherMembersBehaviour behaviour) { }
-}
-
-public class IncrementalMapping<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TOut> 
-{
-    public IncrementalMapping<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TOut> ForMember<TMember>(Expression<Func<TOut, TMember>> member, Expression<Func<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TMember>> mapFunc)
-    {
-        return this;
-    }
-    public void ForAllOtherMembers(OtherMembersBehaviour behaviour) { }
-}
-
-public class IncrementalMapping<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TOut> 
-{
-    public IncrementalMapping<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TOut> ForMember<TMember>(Expression<Func<TOut, TMember>> member, Expression<Func<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TMember>> mapFunc)
-    {
-        return this;
-    }
-    public void ForAllOtherMembers(OtherMembersBehaviour behaviour) { }
-}
-
-";
-
-        var methods = string.Join(Environment.NewLine, usedTypes.Select(x => x.m));
-        var classes = string.Join(Environment.NewLine, usedTypes.Select(x => x.c));
-
-
-        var configFileText = string.Format(configFileTemplate, ConfigClassName, methods, classes);
-
-        return configFileText;
-    }
-
-    public static (string methodSource, string classSource) GetMethodWithClassForTypes(MappingConfigTypes types)
+    private static string GetMethodForNInputs(int inputArgumentsCount)
     {
         const string methodTemplate = @"
-public IncrementalMapping<{0}, {1}> ConfigureMap<{0}, {1}>()
-{{
-    return new IncrementalMapping<{0}, {1}>();    
-}}
+    public IncrementalMapping<{0}, TOut> ConfigureMap<{0}, TOut>()
+    {{
+        return new IncrementalMapping<{0}, TOut>();    
+    }}
 ";
-        const string classTemplate = @"
-public class IncrementalMapping<{0}, {1}> 
+        var result = "TIn";
+
+        for (int i = 2; i <= inputArgumentsCount; i++)
+        {
+            result += $", TIn{i}";
+        }
+
+        return string.Format(methodTemplate, result);
+    }
+
+    private static string GetClassForNInputs(int inputArgumentsCount)
+    {
+        const string methodTemplate = @"
+public class IncrementalMapping<{0}, TOut> 
 {{
-    public IncrementalMapping<{0}, {1}> ForMember<TMember>(Expression<Func<{1}, TMember>> member, Expression<Func<{0}, TMember>> mapFunc)
+    public IncrementalMapping<{0}, TOut> ForMember<TMember>(Expression<Func<TOut, TMember>> member, Expression<Func<{0}, TMember>> mapFunc)
     {{
         return this;
     }}
     public void ForAllOtherMembers(OtherMembersBehaviour behaviour) {{ }}
-}}        
+}}
 ";
+        var result = "TIn";
 
-        var inTypesSeparated = string.Join(", ", types.InTypes.Select(x => x.Name));
+        for (int i = 2; i <= inputArgumentsCount; i++)
+        {
+            result += $", TIn{i}";
+        }
 
-        var methodText = string.Format(methodTemplate, inTypesSeparated, types.OutType.Name);
-
-        var classText = string.Format(classTemplate, inTypesSeparated, types.OutType.Name);
-
-        return (methodText, classText);
+        return string.Format(methodTemplate, result);
     }
 }

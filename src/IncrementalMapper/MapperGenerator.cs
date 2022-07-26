@@ -10,13 +10,24 @@ public class MapperGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        context.RegisterPostInitializationOutput(initializationContext =>
+        context.RegisterPostInitializationOutput((sourceContext) =>
         {
-            initializationContext.AddSource($"{GeneratorHelper.ConfigClassName}.g.cs",
-                GeneratorHelper.GetStaticConfigText());
+            var arities = Enumerable.Range(1, 16).ToImmutableArray();
+            
+            sourceContext.AddSource($"{GeneratorHelper.ConfigClassName}.g.cs",
+                GeneratorHelper.GetConfigText(arities));
         });
 
-        var mappingConfigurations = context.SyntaxProvider.CreateSyntaxProvider(
+        context.RegisterSourceOutput(GetMappers(context), (sourceContext, mappers) =>
+        {
+            Console.WriteLine("lox");
+        });
+    }
+
+    private IncrementalValueProvider<ImmutableArray<int>> GetMapConfigArities(
+        IncrementalGeneratorInitializationContext context)
+    {
+        return context.SyntaxProvider.CreateSyntaxProvider(
                 static (node, ct) =>
                     node is InvocationExpressionSyntax
                     {
@@ -36,70 +47,58 @@ public class MapperGenerator : IIncrementalGenerator
                 static (context, ct) =>
                 {
                     var node = (InvocationExpressionSyntax)context.Node;
-                    var nodeType = (INamedTypeSymbol)context.SemanticModel.GetTypeInfo(node, ct).Type;
 
-                    var typeArguments = nodeType.TypeArguments;
+                    var typeArgumentsCount = node.DescendantNodes()
+                        .OfType<TypeArgumentListSyntax>().First()
+                        .Arguments.Count - 1;
 
-                    var inTypes = typeArguments.RemoveAt(typeArguments.Length - 1);
-                    var outType = typeArguments.Last();
-
-                    var configTypes = new MappingConfigTypes(inTypes, outType);
-
-                    return configTypes;
+                    return typeArgumentsCount;
                 })
             .Collect()
-            .Select((x, _) =>
-            {
-                var types = x.Distinct().Select(GeneratorHelper.GetMethodWithClassForTypes).ToImmutableArray();
-                return GeneratorHelper.GetConfigFileSource(types);
-            });
-
-        // context.RegisterSourceOutput(mappingConfigurations,
-        //     static (context, s) => context.AddSource("", string.Join(", ", s)));
-
-        var configClasses = GetConfigClasses(context.SyntaxProvider);
-
-        var mappings = configClasses.Select((classSymbol, ct) =>
-        {
-            if (classSymbol.Constructors.Length != 1)
-                throw new Exception("Должен быть только конструктор без параметров");
-            var constructor = classSymbol.Constructors.First();
-
-            var body = constructor.PartialImplementationPart;
-
-            return constructor.MethodKind.ToString();
-        });
-
-        // context.RegisterSourceOutput(mappings.Collect(),
-        //     static (productionContext, s) => productionContext.AddSource("lol.txt", string.Join(", ", s))
-        // );
+            .Select((x, _) => x.Insert(0, 1).Distinct().ToImmutableArray());
     }
 
-    private IncrementalValuesProvider<INamedTypeSymbol> GetConfigClasses(SyntaxValueProvider syntaxProvider)
+    private IncrementalValuesProvider<ImmutableArray<MappingConfig>> GetMappers(IncrementalGeneratorInitializationContext context)
     {
-        var classesWithBase = syntaxProvider.CreateSyntaxProvider(
-                    static (node, _) => node is ClassDeclarationSyntax
+        var a = context.SyntaxProvider.CreateSyntaxProvider(
+            static (node, ct) =>
+                node is InvocationExpressionSyntax
+                {
+                    Expression: MemberAccessExpressionSyntax
                     {
-                        BaseList:
+                        Name:
                         {
-                            Types:
+                            Identifier:
                             {
-                                Count: > 0
+                                Text: "ForMember"
                             }
                         }
-                    },
-                    static (c, ct) => (INamedTypeSymbol)c.SemanticModel.GetDeclaredSymbol(c.Node, cancellationToken: ct)
-                )
-                .Where(x => x is not null)
-            ;
-
-        var configClasses = classesWithBase
-            .Select(static (potentialConfig, _) =>
+                    }
+                }
+            ,
+            static (sc, ct) =>
             {
-                return potentialConfig.BaseType.Name == GeneratorHelper.ConfigClassName ? potentialConfig : null;
-            })
-            .Where(x => x is not null);
+                var symbol = (IMethodSymbol?)sc.SemanticModel.GetSymbolInfo(sc.Node).Symbol;
+                var type = (INamedTypeSymbol)symbol?.ReceiverType;
+                var propType = symbol?.TypeArguments.FirstOrDefault();
+                var prop = symbol?.Parameters.ElementAtOrDefault(0);
+                var mapping = symbol?.Parameters.ElementAtOrDefault(1);
 
-        return configClasses;
+                var args = ((InvocationExpressionSyntax)sc.Node).ArgumentList.Arguments;
+
+                var f = sc.SemanticModel.GetTypeInfo(args[0], ct);
+                
+                return new MappingConfig()
+                {
+                     Target = args[0].Expression as SimpleLambdaExpressionSyntax,
+                     Mapping = args[1].Expression as LambdaExpressionSyntax,
+                     OutType = type.TypeArguments.Last() as INamedTypeSymbol,
+                     InTypes = type.TypeArguments.RemoveAt(type.TypeArguments.Length-1).Cast<INamedTypeSymbol>().ToImmutableArray()
+                };
+            });
+        return a.Collect().SelectMany((x, ct) =>
+        {                
+            return x.GroupBy(y => y.OutType, SymbolEqualityComparer.Default).Select(y => y.ToImmutableArray());
+        });
     }
 }
